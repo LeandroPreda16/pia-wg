@@ -40,7 +40,7 @@ config_file = 'PIA-wg.conf'
 print("Saving configuration file {}".format(config_file))
 with open(config_file, 'w') as file:
     file.write('[Interface]\n')
-    file.write('Address = {}\n'.format(pia.connection['peer_ip']))
+    file.write('Address = {}/24\n'.format(pia.connection['peer_ip']))
     file.write('PrivateKey = {}\n'.format(pia.privatekey))
     file.write('DNS = {},{}\n\n'.format(pia.connection['dns_servers'][0], pia.connection['dns_servers'][1]))
     # Added PostUp/PreDown routing rules to support docker container routing 
