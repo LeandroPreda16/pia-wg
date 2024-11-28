@@ -20,12 +20,21 @@ class piawg:
         self.privatekey = None
         self.connection = None
 
-    def get_server_list(self):
-        r = requests.get('https://serverlist.piaservers.net/vpninfo/servers/v4')
-        # Only process first line of response, there's some base64 data at the end we're ignoring
-        data = json.loads(r.text.splitlines()[0])
-        for server in data['regions']:
-            self.server_list[server['name']] = server
+def get_server_list(self):
+    import json
+
+    # Use newest version of PIA serverlist ("v6" as of 20221202)
+    r = requests.get('https://serverlist.piaservers.net/vpninfo/servers/v6')
+    # Only process the first line of response; there's some base64 data at the end we're ignoring
+    data = json.loads(r.text.splitlines()[0])
+    
+    for server in data['regions']:
+        self.server_list[server['name']] = server
+
+    # Save the server list to a JSON file without interrupting execution
+    with open('server_list.json', 'w') as json_file:
+        json.dump(self.server_list, json_file, indent=4)
+
 
     def set_region(self, region_name):
         self.region = region_name
